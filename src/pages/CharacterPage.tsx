@@ -42,8 +42,9 @@ export default function CharacterPage() {
   if (!detail) return <p>로딩 중...</p>;
 
   return (
-    <div className="flex min-h-screen">
-      <div className="w-1/4 p-6 border-r">
+    <div className="flex min-h-screen max-w-5xl mx-auto px-4 py-6">
+      {/* Sidebar 고정 폭 */}
+      <div className="w-64 p-6 border-r flex-shrink-0">
         <SidebarTabs
           name={name!}
           currentTab={tab}
@@ -52,14 +53,18 @@ export default function CharacterPage() {
           }}
         />
       </div>
-      <RightPanel
-        tab={tab}
-        detail={detail}
-        siblings={siblings}
-        onSelect={(charName) =>
-          navigate(`/characters/${encodeURIComponent(charName)}`)
-        }
-      />
+
+      {/* RightPanel 고정 폭 */}
+      <div className="w-[700px] p-6 overflow-auto flex-shrink-0">
+        <RightPanel
+          tab={tab}
+          detail={detail}
+          siblings={siblings}
+          onSelect={(charName) =>
+            navigate(`/characters/${encodeURIComponent(charName)}`)
+          }
+        />
+      </div>
     </div>
   );
 }

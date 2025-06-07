@@ -1,6 +1,6 @@
 import { EquipmentCard } from "@/components/Equipment";
 import { CharacterDetail } from "@/types/character";
-import { parseGem } from "@/utils/tooltipParser";
+import { parseGem, parseCategory } from "@/utils/tooltipParser";
 
 interface Props {
   detail: CharacterDetail;
@@ -10,6 +10,22 @@ export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
+  )?.map((item) => ({
+    ...item,
+    category: parseCategory(item.Type, item.Name),
+  }));
+
+  const weaponArmorItems = filteredEquipment?.filter(
+    (item) => item.category === "weapon-armor"
+  );
+  const accessoryItems = filteredEquipment?.filter(
+    (item) => item.category === "accessory"
+  );
+  const braceletItems = filteredEquipment?.filter(
+    (item) => item.category === "bracelet"
+  );
+  const stoneItems = filteredEquipment?.filter(
+    (item) => item.category === "stone"
   );
 
   return (
@@ -18,11 +34,56 @@ export default function EquipmentSection({ detail }: Props) {
       {filteredEquipment && filteredEquipment.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-2">장비</h3>
-          <div className="flex flex-wrap gap-3">
-            {filteredEquipment.map((item, idx) => (
-              <EquipmentCard key={idx} item={item} />
-            ))}
+
+          {/* 상단 2단 구성 */}
+          <div className="flex space-x-4 text-xs">
+            {/* 무기+방어구 */}
+            <div className="flex flex-col items-center space-y-1 w-1/2">
+              {weaponArmorItems?.map((item, idx) => (
+                <EquipmentCard
+                  key={idx}
+                  item={item}
+                  category="weapon-armor"
+                  small
+                />
+              ))}
+            </div>
+
+            {/* 장신구+팔찌 */}
+            <div className="flex flex-col items-center space-y-1 w-1/2">
+              {accessoryItems?.map((item, idx) => (
+                <EquipmentCard
+                  key={idx}
+                  item={item}
+                  category="accessory"
+                  small
+                />
+              ))}
+              {braceletItems?.map((item, idx) => (
+                <EquipmentCard
+                  key={idx}
+                  item={item}
+                  category="bracelet"
+                  small
+                />
+              ))}
+            </div>
           </div>
+
+          {/* 하단 어빌리티 스톤 별도 한 줄 */}
+          {stoneItems && stoneItems.length > 0 && (
+            <div className="flex flex-col items-center mt-4 text-xs">
+              <div className="font-bold mb-1">어빌리티 스톤</div>
+              {stoneItems.map((item, idx) => (
+                <EquipmentCard
+                  key={idx}
+                  item={item}
+                  category="stone"
+                  small
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
 

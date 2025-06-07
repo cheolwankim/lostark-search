@@ -1,5 +1,3 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-
 interface Props {
   name: string;
   currentTab: string;
