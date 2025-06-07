@@ -8,6 +8,7 @@ interface Props {
 
 export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
+  console.log(ArmoryEquipment);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({
@@ -75,12 +76,7 @@ export default function EquipmentSection({ detail }: Props) {
             <div className="flex flex-col items-center mt-4 text-xs">
               <div className="font-bold mb-1">어빌리티 스톤</div>
               {stoneItems.map((item, idx) => (
-                <EquipmentCard
-                  key={idx}
-                  item={item}
-                  category="stone"
-                  small
-                />
+                <EquipmentCard key={idx} item={item} category="stone" small />
               ))}
             </div>
           )}

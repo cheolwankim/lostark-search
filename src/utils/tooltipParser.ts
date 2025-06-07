@@ -1,5 +1,7 @@
 import { Gem } from "../types/character";
 
+
+
 // HTML 태그 제거 유틸 함수
 export const stripHtml = (html: string): string => {
   return html.replace(/<[^>]+>/g, "").trim();
@@ -49,33 +51,40 @@ export const parseAdvancedReforgeLevel = (
 export const parseTranscendenceLevel = (
   tooltip: TooltipData
 ): number | null => {
-  const element = tooltip["Element_008"];
-  if (
-    element?.type === "IndentStringGroup" &&
-    element.value?.Element_000?.topStr
-  ) {
-    const text = stripHtml(element.value.Element_000.topStr);
+  const targetElement =
+    tooltip["Element_008"]?.type === "IndentStringGroup"
+      ? tooltip["Element_008"]
+      : tooltip["Element_009"]?.type === "IndentStringGroup"
+      ? tooltip["Element_009"]
+      : null;
+
+  if (targetElement?.value?.Element_000?.topStr) {
+    const text = stripHtml(targetElement.value.Element_000.topStr);
     const match = text.match(/\[초월\]\s*(\d+)단계/);
 
     return match ? parseInt(match[1], 10) : null;
   }
+
   return null;
 };
 
-// 초월 스택(개수) 파싱
 export const parseTranscendenceCount = (
   tooltip: TooltipData
 ): number | null => {
-  const element = tooltip["Element_008"];
-  if (
-    element?.type === "IndentStringGroup" &&
-    element.value?.Element_000?.topStr
-  ) {
-    const text = stripHtml(element.value.Element_000.topStr);
+  const targetElement =
+    tooltip["Element_008"]?.type === "IndentStringGroup"
+      ? tooltip["Element_008"]
+      : tooltip["Element_009"]?.type === "IndentStringGroup"
+      ? tooltip["Element_009"]
+      : null;
+
+  if (targetElement?.value?.Element_000?.topStr) {
+    const text = stripHtml(targetElement.value.Element_000.topStr);
     const match = text.match(/\d+단계.*?(\d+)\s*$/);
 
     return match ? parseInt(match[1], 10) : null;
   }
+
   return null;
 };
 
@@ -126,4 +135,56 @@ export const parseCategory = (
   if (itemType === "어빌리티 스톤") return "stone"; // 여기 추가!!
   if (itemName.includes("팔찌")) return "bracelet";
   return null;
+};
+
+// 장신구 기본효과 (스탯 + 체력)
+export const parseBasicEffect = (tooltip: TooltipData): string[] => {
+  const value = tooltip["Element_004"]?.value?.Element_001;
+  if (!value) return [];
+  return stripHtml(value)
+    .split(/<BR>|[\r\n]+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+};
+
+// 장신구 연마효과
+// 연마 효과 파싱 → 색상 + 텍스트 함께 반환
+export interface ParsedPolishEffect {
+  color: string; // 색상 (ex. '#FF0000')
+  text: string; // 효과 내용
+}
+
+export const parsePolishEffect = (
+  tooltip: TooltipData
+): ParsedPolishEffect[] => {
+  const value = tooltip["Element_005"]?.value?.Element_001;
+  if (!value) return [];
+
+  // Split by <BR> 또는 줄바꿈
+  const rawEffects = value
+    .split(/<BR>|[\r\n]+/)
+    .map((line: string) => line.trim())
+    .filter(Boolean);
+
+  return rawEffects.map((line: string) => {
+    // HTML 에서 color 추출
+    const colorMatch = line.match(/<font color=['"](#\w{6})['"]>/i);
+    const color = colorMatch ? colorMatch[1] : "#999999"; // 없으면 회색
+
+    // 텍스트 추출 → <font ...>텍스트</font> 부분만
+    const textMatch = line.match(/<font color=['"]#\w{6}['"]>(.*?)<\/font>/i);
+    const text = textMatch ? textMatch[1].trim() : stripHtml(line);
+
+    return { color, text };
+  });
+};
+
+// 아크패시브 포인트 효과 (깨달음)
+export const parsePassiveEffect = (tooltip: TooltipData): string[] => {
+  const value = tooltip["Element_007"]?.value?.Element_001;
+  if (!value) return [];
+  return stripHtml(value)
+    .split(/<BR>|[\r\n]+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
 };
