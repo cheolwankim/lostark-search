@@ -69,6 +69,9 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
           height: small ? 24 : 40,
           marginRight: small ? 6 : 10,
           flexShrink: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <img
@@ -84,8 +87,8 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
           <span
             style={{
               position: "absolute",
-              bottom: 0,
-              right: 0,
+              bottom: "2px",
+              right: "2px",
               backgroundColor: "rgba(0,0,0,0.6)",
               color: "#fff",
               fontSize: small ? "8px" : "10px",
@@ -96,6 +99,26 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
             {tier.startsWith("4") ? "4T" : tier.startsWith("3") ? "3T" : ""}
           </span>
         )}
+        
+        {/* 품질 ProgressBar (이미지 아래) */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "-5px", // 이미지 바로 아래 약간 여백
+            left: 0,
+            width: "100%",
+            height: "3px",
+            backgroundColor: "#ddd", // 배경 (연한 회색)
+          }}
+        >
+          <div
+            style={{
+              width: `${quality}%`,
+              height: "100%",
+              backgroundColor: qualityColor,
+            }}
+          />
+        </div>
       </div>
 
       {/* 기본 정보 표시 */}
