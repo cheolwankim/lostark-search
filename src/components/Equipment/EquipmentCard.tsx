@@ -58,110 +58,83 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
-        marginBottom: small ? "4px" : "8px",
-        fontSize: small ? "10px" : "14px",
+        alignItems: "center", // 전체 row 수직 정렬
+        height: "40px", // 전체 row 높이 고정 (무기/방어구와 동일하게)
         whiteSpace: "nowrap",
       }}
     >
-      <div
+      {/* 왼쪽 이미지 */}
+      <img
+        src={item.Icon}
+        alt={item.Name}
         style={{
-          display: "flex",
-          alignItems: "center",
+          width: small ? 24 : 40,
+          height: small ? 24 : 40,
+          marginRight: small ? 6 : 10,
+          flexShrink: 0,
         }}
-      >
-        {/* 이미지 + 4T / 3T 표시 */}
-        <div
-          style={{
-            position: "relative",
-            display: "inline-block",
-            marginRight: small ? 6 : 10,
-            flexShrink: 0,
-            width: small ? 24 : 40,
-            height: small ? 24 : 40,
-          }}
-        >
-          <img
-            src={item.Icon}
-            alt={item.Name}
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
-          />
-          <span
-            style={{
-              position: "absolute",
-              bottom: 2,
-              right: 2,
-              backgroundColor: "rgba(0, 0, 0, 0.6)",
-              color: "white",
-              fontSize: small ? "8px" : "10px",
-              padding: "1px 2px",
-              borderRadius: "2px",
-            }}
-          >
-            {tier.replace("티어", "T")}
+      />
+
+      {/* 기본 정보 표시 */}
+      {category === "weapon-armor" && (
+        <>
+          <span style={{ marginRight: small ? 6 : 8 }}>{tier}</span>
+          <span style={{ marginRight: small ? 6 : 8 }}>{enhance}</span>
+          <span style={{ marginRight: small ? 6 : 8, color: qualityColor }}>
+            {quality}
           </span>
-        </div>
+          {transcendenceLevel !== null && transcendenceCount !== null && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginRight: small ? 6 : 8,
+              }}
+            >
+              <img
+                src="/myIcon/transcendence.png"
+                alt="초월"
+                style={{ width: 16, height: 16, marginRight: 4 }}
+              />
+              <span>
+                {transcendenceLevel}단계 ({transcendenceCount})
+              </span>
+            </div>
+          )}
+          {advancedReforge && <span>+{advancedReforge}단계</span>}
+        </>
+      )}
 
-        {/* 무기/방어구 */}
-        {category === "weapon-armor" && (
-          <>
-            <span style={{ marginRight: small ? 6 : 8 }}>{tier}</span>
-            <span style={{ marginRight: small ? 6 : 8 }}>{enhance}</span>
-            <span style={{ marginRight: small ? 6 : 8, color: qualityColor }}>
-              {quality}
-            </span>
-            {transcendenceLevel !== null && transcendenceCount !== null && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight: small ? 6 : 8,
-                }}
-              >
-                <img
-                  src="/myIcon/transcendence.png"
-                  alt="초월"
-                  style={{ width: 16, height: 16, marginRight: 4 }}
-                />
-                <span>
-                  {transcendenceLevel}단계 ({transcendenceCount})
-                </span>
-              </div>
-            )}
-            {advancedReforge && <span>+{advancedReforge}단계</span>}
-          </>
-        )}
+      {category !== "weapon-armor" && (
+        <>
+          <span style={{ marginRight: small ? 6 : 8 }}>{tier}</span>
+          <span style={{ marginRight: small ? 6 : 8 }}>{enhance}</span>
+          <span style={{ marginRight: small ? 6 : 8, color: qualityColor }}>
+            {quality}
+          </span>
+        </>
+      )}
 
-        {/* 악세 / 팔찌 / 스톤 */}
-        {category !== "weapon-armor" && (
-          <>
-            <span style={{ marginRight: small ? 6 : 8 }}>{tier}</span>
-            <span style={{ marginRight: small ? 6 : 8 }}>{enhance}</span>
-            <span style={{ marginRight: small ? 6 : 8, color: qualityColor }}>
-              {quality}
-            </span>
-          </>
-        )}
-      </div>
-
-      {/* Polish Effect 렌더링 */}
+      {/* PolishEffect → 오른쪽 공간에 세로 정렬 */}
       {polishEffects.length > 0 && (
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
-            gap: "4px",
-            marginTop: "2px",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            marginLeft: small ? 6 : 10,
+            gap: "0px",
+            flex: 1, // 남는 공간에 PolishEffect 차지
+            overflow: "hidden",
           }}
         >
-          {polishEffects.map((effect, idx) => {
+          {polishEffects.slice(0, 3).map((effect, idx) => {
             let gradeColor = "#999999";
             if (effect.grade === "상") gradeColor = "#FFD700";
             else if (effect.grade === "중") gradeColor = "#A770FF";
             else if (effect.grade === "하") gradeColor = "#4FC3F7";
+            
 
             return (
               <div
@@ -169,20 +142,20 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  backgroundColor: "#f5f5f5",
-                  borderRadius: "4px",
-                  padding: "2px 6px",
-                  fontSize: small ? "9px" : "11px",
-                  border: `1px solid ${gradeColor}`,
+                  // fontWeight: "bold",
+                  fontSize: "7px", // 이미 작음 OK
                   color: effect.grade === "none" ? "#999999" : "#333",
+                  lineHeight: "1.2", // ★ 추가 → 줄 간격 타이트하게 (기본 line-height 는 1.5 ~ 1.6 정도라 넓음)
+                  padding: "0px", // ★ padding 제거 → 더 촘촘하게
                 }}
               >
                 {effect.grade !== "none" && (
                   <span
                     style={{
                       display: "inline-block",
-                      width: "1.5em",
+                      minWidth: "1.5em",
                       fontWeight: "bold",
+                      fontSize: "7px",
                       color: gradeColor,
                       marginRight: "4px",
                     }}
