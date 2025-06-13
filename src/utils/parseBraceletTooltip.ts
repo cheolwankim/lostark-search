@@ -22,10 +22,16 @@ export function parseBraceletTooltip(item: any): Bracelet {
 
   const partBox = tooltip.Element_004?.value?.Element_001 || "";
 
-  const lines: string[] = partBox
-    .split("<BR>")
+  // BR 기준 split
+  const rawLines: string[] = partBox.split("<BR>");
+
+  // img 태그 제거 + 텍스트만 추출 + 공백 제거
+  const lines: string[] = rawLines
     .map((line: string) =>
-      line.replace(/<[^>]*>/g, "").replace(/^\s+|\s+$/g, "")
+      line
+        .replace(/<img[^>]*>/g, "") // img 태그 제거
+        .replace(/<[^>]*>/g, "") // 나머지 HTML 태그 제거
+        .replace(/^\s+|\s+$/g, "") // 양쪽 공백 제거
     )
     .filter((line: string) => line.length > 0);
 
@@ -40,28 +46,52 @@ export function parseBraceletTooltip(item: any): Bracelet {
     tier: "상" | "중" | "하";
   }[] = [];
 
-  lines.forEach((line) => {
-    if (isMainOption(line)) {
-      const match = line.match(/^(힘|민첩|지능|체력|치명|특화|제압|신속|인내)\s*\+?([0-9,.]+)/);
+  let currentSubOption: {
+    name: string;
+    value: number | string;
+    tier: "상" | "중" | "하";
+  } | null = null;
+
+  rawLines.forEach((rawLine, index) => {
+    const cleanLine = rawLine
+      .replace(/<img[^>]*>/g, "")
+      .replace(/<[^>]*>/g, "")
+      .replace(/^\s+|\s+$/g, "");
+
+    if (cleanLine.length === 0) return;
+
+    if (isMainOption(cleanLine)) {
+      const match = cleanLine.match(
+        /^(힘|민첩|지능|체력|치명|특화|제압|신속|인내)\s*\+?([0-9,.]+)/
+      );
       if (match) {
         MainOptions.push({
           name: match[1],
           value: match[2],
         });
       }
+      currentSubOption = null; // MainOption 처리 시 currentSubOption 초기화
       return;
     }
 
-    // SubOption → line 전체가 하나의 옵션으로 간주
-    // 숫자 (퍼센트 포함 가능)만 따로 추출 → 없으면 기본 "0"
-    const valueMatch = line.match(/([+-]?[0-9]+(?:\.[0-9]+)?)\s*%?/);
+    // img 태그가 포함된 원본 줄인지 여부 → 새로운 SubOption 시작 여부 판단
+    const isNewSubOption = rawLine.includes("emoticon_tooltip_bracelet");
+
+    const valueMatch = cleanLine.match(/([+-]?[0-9]+(?:\.[0-9]+)?)\s*%?/);
     const value = valueMatch ? valueMatch[1] : "0";
 
-    SubOptions.push({
-      name: line,
-      value,
-      tier: getOptionTier(line, value, item.Grade),
-    });
+    if (isNewSubOption) {
+      // 새로운 SubOption 시작
+      currentSubOption = {
+        name: cleanLine,
+        value,
+        tier: getOptionTier(cleanLine, value, item.Grade),
+      };
+      SubOptions.push(currentSubOption);
+    } else if (currentSubOption) {
+      // 이어지는 줄 → 기존 SubOption.name 에 이어붙이기
+      currentSubOption.name += " " + cleanLine;
+    }
   });
 
   return {
