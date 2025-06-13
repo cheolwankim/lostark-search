@@ -42,6 +42,7 @@ const ProgressBar = ({
       <div
         style={{
           height: 8,
+
           background: "#e0e0e0",
           borderRadius: 4,
           overflow: "hidden",

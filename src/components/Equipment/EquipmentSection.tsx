@@ -1,15 +1,17 @@
 // src/components/Equipment/EquipmentSection.tsx
 
-import { EquipmentCard } from "@/components/Equipment";
+import { BraceletCard, EquipmentCard } from "@/components/Equipment";
 import { CharacterDetail } from "@/types/character";
 import { parseGem, parseCategory } from "@/utils/tooltipParser";
+import { parseBraceletTooltip } from "@/utils/parseBraceletTooltip";
 
 interface Props {
   detail: CharacterDetail;
 }
 
 export default function EquipmentSection({ detail }: Props) {
-  const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;  
+  const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
+  console.log(ArmoryEquipment);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({
@@ -62,12 +64,7 @@ export default function EquipmentSection({ detail }: Props) {
                 />
               ))}
               {braceletItems?.map((item, idx) => (
-                <EquipmentCard
-                  key={idx}
-                  item={item}
-                  small
-                  category={"bracelet"}
-                />
+                <BraceletCard key={idx} item={parseBraceletTooltip(item)} />
               ))}
             </div>
           </div>

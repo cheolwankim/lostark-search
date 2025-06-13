@@ -68,3 +68,19 @@ export interface Gem {
   Icon: string;
   Tooltip: string;
 }
+
+// Equipment 아래에 추가
+export interface Bracelet {
+  Name: string;
+  Grade: string;
+  Icon: string;
+  MainOptions: {
+    name: string;
+    value: number | string;
+  }[];
+  SubOptions: {
+    name: string;
+    value: number | string;
+    tier: "상" | "중" | "하";
+  }[];
+}
