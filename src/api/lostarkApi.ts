@@ -23,3 +23,9 @@ export const getCharacterDetail = async (name: string) => {
   const res = await axiosInstance.get(`/armories/characters/${name}`);
   return res.data;
 };
+
+//캐릭터 이미지 조회
+export const getCharacterProfileImage = async (name: string) => {
+  const res = await axiosInstance.get(`/armories/characters/${name}/profiles`);
+  return res.data;
+};

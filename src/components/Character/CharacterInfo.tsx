@@ -8,11 +8,18 @@ interface Props {
 
 export default function CharacterInfo({
   profile,
+  profileImageUrl,
   currentTab,
   onTabChange,
-}: Props) {
+}: Props & { profileImageUrl: string }) {
   return (
-    <div className="w-[300px] flex-shrink-0 p-4 border-r border-gray-300">
+    <div className="w-[300px] flex-shrink-0 p-4 border-gray-300">
+      <img
+        src={profileImageUrl}
+        alt={profile.CharacterName}
+        className="w-45 h-45 object-cover rounded-full mx-auto mb-4 border"
+      />
+
       <h2 className="text-xl font-bold mb-2">{profile.CharacterName}</h2>
       <p>서버: {profile.ServerName}</p>
       <p>직업: {profile.CharacterClassName}</p>

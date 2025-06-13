@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { getCharacterDetail, getCharacterProfile } from "@/api/lostarkApi";
+import {
+  getCharacterDetail,
+  getCharacterProfile,
+  getCharacterProfileImage,
+} from "@/api/lostarkApi";
 import {
   CharacterDetail,
   CharacterSummary,
   ArmoryProfile,
 } from "@/types/character";
-import { CharacterInfo } from "@/components/Character";
+import CharacterInfo from "@/components/Character/CharacterInfo";
 import { RightPanel, SidebarTabs } from "@/components/Sidebar";
 
 export default function CharacterPage() {
@@ -17,6 +21,7 @@ export default function CharacterPage() {
 
   const [detail, setDetail] = useState<CharacterDetail | null>(null);
   const [siblings, setSiblings] = useState<CharacterSummary[]>([]);
+  const [profileImageUrl, setProfileImageUrl] = useState<string>("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -24,13 +29,17 @@ export default function CharacterPage() {
 
     const fetchData = async () => {
       try {
-        const [detailData, siblingData] = await Promise.all([
+        const [detailData, siblingData, profileImageData] = await Promise.all([
           getCharacterDetail(name),
           getCharacterProfile(name),
+          getCharacterProfileImage(name),
         ]);
+
         setDetail(detailData);
         setSiblings(siblingData);
+        setProfileImageUrl(profileImageData.CharacterImage);
       } catch (err) {
+        console.error(err);
         setError("캐릭터 정보를 불러올 수 없습니다.");
       }
     };
@@ -45,8 +54,9 @@ export default function CharacterPage() {
     <div className="flex min-h-screen max-w-5xl mx-auto px-4 py-6">
       {/* Sidebar 고정 폭 */}
       <div className="w-64 p-6 border-r flex-shrink-0">
-        <SidebarTabs
-          name={name!}
+        <CharacterInfo
+          profile={detail.ArmoryProfile}
+          profileImageUrl={profileImageUrl}
           currentTab={tab}
           onTabChange={(newTab) => {
             setSearchParams({ tab: newTab });

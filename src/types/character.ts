@@ -84,3 +84,12 @@ export interface Bracelet {
     tier: "상" | "중" | "하";
   }[];
 }
+
+
+export interface CharacterProfileImage {
+  CharacterImage: string;
+  ExpeditionLevel: number;
+  PvpGradeName: string;
+  TownLevel: number;
+  TownName: string;
+}
