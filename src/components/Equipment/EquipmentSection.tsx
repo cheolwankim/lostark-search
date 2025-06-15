@@ -2,9 +2,14 @@ import {
   BraceletCard,
   EquipmentCard,
   EngravingCard,
+  CardItemCard,
 } from "@/components/Equipment";
 import { CharacterDetail } from "@/types/character";
-import { parseGem, parseCategory, parseTierAndQuality } from "@/utils/tooltipParser";
+import {
+  parseGem,
+  parseCategory,
+  parseTierAndQuality,
+} from "@/utils/tooltipParser";
 import { parseBraceletTooltip } from "@/utils/parseBraceletTooltip";
 import { parseEngravingsFromTooltip } from "@/utils/parseEngravigsFromTooltip";
 
@@ -14,7 +19,7 @@ interface Props {
 
 export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
-  console.log(ArmoryEquipment);
+  console.log(ArmoryCard);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({
@@ -97,11 +102,7 @@ export default function EquipmentSection({ detail }: Props) {
                     key={idx}
                     className="flex flex-col gap-1 border rounded p-2 bg-gray-50 w-full"
                   >
-                    <EquipmentCard
-                      item={item}
-                      small
-                      category="stone"
-                    />
+                    <EquipmentCard item={item} small category="stone" />
                     <div className="flex gap-2 mt-1">
                       {engravings.map((engrave, i) => (
                         <EngravingCard
@@ -153,7 +154,7 @@ export default function EquipmentSection({ detail }: Props) {
                     className="w-6 h-6"
                   />
                   <span>
-                    {parsed.level} {parsed.name}
+                    {parsed.level}레벨 {parsed.name}
                   </span>
                 </li>
               );
@@ -166,11 +167,24 @@ export default function EquipmentSection({ detail }: Props) {
       {ArmoryCard?.Cards && ArmoryCard.Cards.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-2">카드</h3>
-          <ul className="flex flex-wrap gap-3">
+
+          {/* 총 각성 수 표시 */}
+          <div className="text-sm text-gray-600 mb-1">
+            총 각성 수:{" "}
+            <span className="text-yellow-600 font-semibold">
+              {ArmoryCard.Cards.reduce((sum, card) => sum + card.AwakeCount, 0)}
+            </span>
+          </div>
+
+        <ul className="grid grid-cols-3 gap-3">
             {ArmoryCard.Cards.map((card, idx) => (
-              <li key={idx} className="border px-2 py-1 rounded">
-                {card.Name}
-              </li>
+              <CardItemCard
+                key={idx}
+                name={card.Name}
+                icon={card.Icon}
+                awakeCount={card.AwakeCount}
+                awakeTotal={card.AwakeTotal}
+              />
             ))}
           </ul>
         </div>
