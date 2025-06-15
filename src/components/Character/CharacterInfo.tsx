@@ -2,6 +2,7 @@ import { ArmoryProfile } from "@/types/character";
 
 interface Props {
   profile: ArmoryProfile;
+  profileImageUrl: string;
   currentTab: string;
   onTabChange: (tab: string) => void;
 }
@@ -11,32 +12,43 @@ export default function CharacterInfo({
   profileImageUrl,
   currentTab,
   onTabChange,
-}: Props & { profileImageUrl: string }) {
+}: Props) {
   return (
-    <div className="w-[300px] flex-shrink-0 p-4 border-gray-300">
+    <div className="w-[300px] flex-shrink-0 p-4 text-center">
       <img
         src={profileImageUrl}
         alt={profile.CharacterName}
-        className="w-45 h-45 object-cover rounded-full mx-auto mb-4 border"
+        className="w-28 h-28 object-cover rounded-full mx-auto mb-4 shadow-md border"
       />
 
-      <h2 className="text-xl font-bold mb-2">{profile.CharacterName}</h2>
-      <p>서버: {profile.ServerName}</p>
-      <p>직업: {profile.CharacterClassName}</p>
-      <p>아이템 레벨: {profile.ItemAvgLevel}</p>
+      <h2 className="text-xl font-bold text-gray-800 mb-1">
+        {profile.CharacterName}
+      </h2>
+      <p className="text-sm text-gray-500 mb-1">서버: {profile.ServerName}</p>
+      <p className="text-sm text-gray-500 mb-1">
+        직업: {profile.CharacterClassName}
+      </p>
+      <p className="text-sm text-gray-500">
+        아이템 레벨: {profile.ItemAvgLevel}
+      </p>
 
-      <div className="mt-6 space-y-2">
+      <div className="mt-6 space-y-2 text-left">
         <button
-          className={`block w-full text-left font-semibold ${
-            currentTab === "equipments" ? "underline" : ""
+          className={`block text-sm py-1.5 px-3 mx-auto transition ${
+            currentTab === "equipments"
+              ? "font-bold underline text-blue-700"
+              : "text-gray-700 hover:text-black"
           }`}
           onClick={() => onTabChange("equipments")}
         >
           장비
         </button>
+
         <button
-          className={`block w-full text-left font-semibold ${
-            currentTab === "siblings" ? "underline" : ""
+          className={`block text-sm py-1.5 px-3 mx-auto transition ${
+            currentTab === "siblings"
+              ? "font-bold underline text-blue-700"
+              : "text-gray-700 hover:text-black"
           }`}
           onClick={() => onTabChange("siblings")}
         >

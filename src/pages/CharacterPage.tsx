@@ -8,10 +8,9 @@ import {
 import {
   CharacterDetail,
   CharacterSummary,
-  ArmoryProfile,
 } from "@/types/character";
 import CharacterInfo from "@/components/Character/CharacterInfo";
-import { RightPanel, SidebarTabs } from "@/components/Sidebar";
+import { RightPanel } from "@/components/Sidebar";
 
 export default function CharacterPage() {
   const { name } = useParams<{ name: string }>();
@@ -52,8 +51,8 @@ export default function CharacterPage() {
 
   return (
     <div className="flex min-h-screen max-w-5xl mx-auto px-4 py-6">
-      {/* Sidebar 고정 폭 */}
-      <div className="w-64 p-6 border-r flex-shrink-0">
+      {/* 왼쪽 사이드바 */}
+      <div className="w-64 border-r border-gray-300">
         <CharacterInfo
           profile={detail.ArmoryProfile}
           profileImageUrl={profileImageUrl}
@@ -64,8 +63,8 @@ export default function CharacterPage() {
         />
       </div>
 
-      {/* RightPanel 고정 폭 */}
-      <div className="w-[700px] p-6 overflow-auto flex-shrink-0">
+      {/* 오른쪽 패널 */}
+      <div className="flex-1 p-6 overflow-auto">
         <RightPanel
           tab={tab}
           detail={detail}
