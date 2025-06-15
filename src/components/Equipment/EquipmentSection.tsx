@@ -1,17 +1,20 @@
-// src/components/Equipment/EquipmentSection.tsx
-
-import { BraceletCard, EquipmentCard } from "@/components/Equipment";
+import {
+  BraceletCard,
+  EquipmentCard,
+  EngravingCard,
+} from "@/components/Equipment";
 import { CharacterDetail } from "@/types/character";
 import { parseGem, parseCategory } from "@/utils/tooltipParser";
 import { parseBraceletTooltip } from "@/utils/parseBraceletTooltip";
+import { parseEngravingsFromTooltip } from "@/utils/parseEngravigsFromTooltip";
 
 interface Props {
   detail: CharacterDetail;
 }
 
 export default function EquipmentSection({ detail }: Props) {
-  const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;  
-  console.log(ArmoryEquipment)
+  const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
+ console.log(ArmoryEngraving)
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({
@@ -39,28 +42,27 @@ export default function EquipmentSection({ detail }: Props) {
         <div>
           <h3 className="text-lg font-semibold mb-2">장비</h3>
 
-          {/* 상단 2단 구성 */}
           <div className="flex space-x-4 text-xs">
-            {/* 무기+방어구 */}
+            {/* 무기 + 방어구 */}
             <div className="flex flex-col items-start space-y-1 w-1/2">
               {weaponArmorItems?.map((item, idx) => (
                 <EquipmentCard
                   key={idx}
                   item={item}
                   small
-                  category={"weapon-armor"}
+                  category="weapon-armor"
                 />
               ))}
             </div>
 
-            {/* 장신구+팔찌 */}
+            {/* 장신구 + 팔찌 */}
             <div className="flex flex-col items-start space-y-1 w-1/2">
               {accessoryItems?.map((item, idx) => (
                 <EquipmentCard
                   key={idx}
                   item={item}
                   small
-                  category={"accessory"}
+                  category="accessory"
                 />
               ))}
               {braceletItems?.map((item, idx) => (
@@ -69,13 +71,35 @@ export default function EquipmentSection({ detail }: Props) {
             </div>
           </div>
 
-          {/* 하단 어빌리티 스톤 별도 한 줄 */}
+          {/* 어빌리티 스톤 섹션 */}
           {stoneItems && stoneItems.length > 0 && (
             <div className="flex flex-col items-start mt-4 text-xs">
               <div className="font-bold mb-1">어빌리티 스톤</div>
-              {stoneItems.map((item, idx) => (
-                <EquipmentCard key={idx} item={item} small category={"stone"} />
-              ))}
+              {stoneItems.map((item, idx) => {
+                const engravings = parseEngravingsFromTooltip(item.Tooltip);
+
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-3 border rounded p-2 bg-gray-50 w-full"
+                  >
+                    <img
+                      src={item.Icon}
+                      alt={item.Name}
+                      className="w-10 h-10"
+                    />
+                    <div className="flex flex-col gap-1">
+                      {engravings.map((engrave, i) => (
+                        <EngravingCard
+                          key={i}
+                          name={engrave.name}
+                          level={engrave.level}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -85,11 +109,15 @@ export default function EquipmentSection({ detail }: Props) {
       {ArmoryEngraving?.Effects && ArmoryEngraving.Effects.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-2">각인</h3>
-          <ul className="list-disc list-inside">
+          <div className="space-y-1">
             {ArmoryEngraving.Effects.map((engrave, idx) => (
-              <li key={idx}>{engrave.Name}</li>
+              <EngravingCard
+                key={idx}
+                name={engrave.Name}
+                level={engrave.Description}
+              />
             ))}
-          </ul>
+          </div>
         </div>
       )}
 
