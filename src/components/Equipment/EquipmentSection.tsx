@@ -4,7 +4,7 @@ import {
   EngravingCard,
 } from "@/components/Equipment";
 import { CharacterDetail } from "@/types/character";
-import { parseGem, parseCategory } from "@/utils/tooltipParser";
+import { parseGem, parseCategory, parseTierAndQuality } from "@/utils/tooltipParser";
 import { parseBraceletTooltip } from "@/utils/parseBraceletTooltip";
 import { parseEngravingsFromTooltip } from "@/utils/parseEngravigsFromTooltip";
 
@@ -14,7 +14,7 @@ interface Props {
 
 export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
- console.log(ArmoryEngraving)
+  console.log(ArmoryEquipment);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({
@@ -65,9 +65,24 @@ export default function EquipmentSection({ detail }: Props) {
                   category="accessory"
                 />
               ))}
-              {braceletItems?.map((item, idx) => (
-                <BraceletCard key={idx} item={parseBraceletTooltip(item)} />
-              ))}
+              {braceletItems?.map((item, idx) => {
+                const parsed = parseBraceletTooltip(item);
+                const tooltip = JSON.parse(item.Tooltip);
+                const { tier } = parseTierAndQuality(tooltip);
+                return (
+                  <BraceletCard
+                    key={idx}
+                    item={parsed}
+                    tier={
+                      tier.startsWith("4")
+                        ? "4"
+                        : tier.startsWith("3")
+                        ? "3"
+                        : ""
+                    }
+                  />
+                );
+              })}
             </div>
           </div>
 
@@ -77,18 +92,17 @@ export default function EquipmentSection({ detail }: Props) {
               <div className="font-bold mb-1">어빌리티 스톤</div>
               {stoneItems.map((item, idx) => {
                 const engravings = parseEngravingsFromTooltip(item.Tooltip);
-
                 return (
                   <div
                     key={idx}
-                    className="flex items-start gap-3 border rounded p-2 bg-gray-50 w-full"
+                    className="flex flex-col gap-1 border rounded p-2 bg-gray-50 w-full"
                   >
-                    <img
-                      src={item.Icon}
-                      alt={item.Name}
-                      className="w-10 h-10"
+                    <EquipmentCard
+                      item={item}
+                      small
+                      category="stone"
                     />
-                    <div className="flex flex-col gap-1">
+                    <div className="flex gap-2 mt-1">
                       {engravings.map((engrave, i) => (
                         <EngravingCard
                           key={i}

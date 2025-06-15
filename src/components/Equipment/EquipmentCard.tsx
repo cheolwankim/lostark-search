@@ -213,7 +213,7 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
           </div>
         )}
 
-        {category !== "weapon-armor" && (
+        {(category === "accessory" || category === "bracelet") && (
           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <ProgressBar
               label="품질"
