@@ -6,15 +6,22 @@ export interface ParsedStatEffect {
   VIT?: number;
 }
 
-export const parseStatEffect = (tooltip: TooltipData): ParsedStatEffect => {
-  const element = tooltip["Element_004"];
+// category만 추가됨
+export const parseStatEffect = (
+  tooltip: TooltipData,
+  category: "weapon-armor" | "accessory"
+): ParsedStatEffect => {
+  // 위치 분기만 간단히
+  const element =
+    category === "weapon-armor"
+      ? tooltip["Element_006"]
+      : tooltip["Element_004"];
+
   if (
     element?.type === "ItemPartBox" &&
     element.value?.Element_000?.includes("기본 효과")
   ) {
     const text = element.value.Element_001 as string;
-
-    // 먼저 <BR> 기준으로 split
     const lines = text.split("<BR>");
 
     let mainStatValue: number | undefined = undefined;
@@ -22,7 +29,6 @@ export const parseStatEffect = (tooltip: TooltipData): ParsedStatEffect => {
 
     lines.forEach((line) => {
       const cleanLine = stripHtml(line);
-
       if (cleanLine.includes("힘")) {
         const match = cleanLine.match(/힘\s*\+?([\d,]+)/);
         if (match) mainStatValue = parseInt(match[1].replace(/,/g, ""), 10);
@@ -38,10 +44,7 @@ export const parseStatEffect = (tooltip: TooltipData): ParsedStatEffect => {
       }
     });
 
-    return {
-      mainStat: mainStatValue,
-      VIT: vitValue,
-    };
+    return { mainStat: mainStatValue, VIT: vitValue };
   }
 
   return {};

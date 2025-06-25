@@ -19,7 +19,8 @@ interface Props {
 
 export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
-  console.log(ArmoryCard);
+  
+  console.log(ArmoryEquipment);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({

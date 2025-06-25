@@ -1,5 +1,3 @@
-// src/utils/parseEngravingsFromTooltip.ts
-
 export interface ParsedEngraving {
   name: string;
   level: string;
@@ -9,23 +7,27 @@ export function parseEngravingsFromTooltip(tooltip: string): ParsedEngraving[] {
   try {
     const parsed = JSON.parse(tooltip);
 
-    const contentMap =
-      parsed?.Element_006?.value?.Element_000?.contentStr || {};
+    // Element 전체에서 type === "IndentStringGroup" 만 필터
+    const elements = Object.values(parsed).filter(
+      (el: any) => el?.type === "IndentStringGroup"
+    );
 
-    const engravingList: ParsedEngraving[] = Object.values(contentMap)
-      .map((item: any) => {
+    let engravingList: ParsedEngraving[] = [];
+
+    elements.forEach((element: any) => {
+      const contentMap = element?.value?.Element_000?.contentStr || {};
+      Object.values(contentMap).forEach((item: any) => {
         const raw = item?.contentStr || "";
-        const plain = raw
-          .replace(/<[^>]+>/g, "") // HTML 태그 제거
-          .trim(); // 예: [타격의 대가] Lv.3
-
+        const plain = raw.replace(/<[^>]+>/g, "").trim();
         const match = plain.match(/\[(.+?)\]\s*Lv\.?(\d+)/);
         if (match) {
-          return { name: match[1], level: `Lv.${match[2]}` };
+          engravingList.push({
+            name: match[1],
+            level: `Lv.${match[2]}`,
+          });
         }
-        return null;
-      })
-      .filter((x): x is ParsedEngraving => x !== null);
+      });
+    });
 
     return engravingList;
   } catch (err) {

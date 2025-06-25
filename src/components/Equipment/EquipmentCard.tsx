@@ -107,7 +107,10 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
         )
       : [];
 
-  const parsedStats = parseStatEffect(tooltip);
+  const parsedStats = 
+    category === "weapon-armor" || category === "accessory"
+      ? parseStatEffect(tooltip, category)
+      : {};
 
   // 부위 판별
   const part = grade.includes("목걸이")
