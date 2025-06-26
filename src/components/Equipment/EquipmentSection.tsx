@@ -11,7 +11,7 @@ import {
   parseTierAndQuality,
 } from "@/utils/tooltipParser";
 import { parseBraceletTooltip } from "@/utils/parseBraceletTooltip";
-import { parseEngravingsFromTooltip } from "@/utils/parseEngravigsFromTooltip";
+import { parseEngravingsFromTooltip } from "@/utils/parseEngravingsFromTooltip";
 
 interface Props {
   detail: CharacterDetail;
@@ -19,7 +19,7 @@ interface Props {
 
 export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
-  
+
   console.log(ArmoryEquipment);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
@@ -177,7 +177,7 @@ export default function EquipmentSection({ detail }: Props) {
             </span>
           </div>
 
-        <ul className="grid grid-cols-3 gap-3">
+          <ul className="grid grid-cols-3 gap-3">
             {ArmoryCard.Cards.map((card, idx) => (
               <CardItemCard
                 key={idx}

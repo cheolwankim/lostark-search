@@ -1,3 +1,5 @@
+// 악세(목걸이 귀걸이 반지) 상중하 무 옵션 등급
+
 import { validOptions, AccessoryCategory } from "./validOptions";
 
 export const getGradeFromText = (

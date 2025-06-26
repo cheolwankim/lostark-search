@@ -1,5 +1,3 @@
-// src/utils/parseBraceletTooltip.ts
-
 import { Bracelet } from "@/types/character";
 import { TooltipData } from "@/utils/tooltipParser";
 import { getOptionTier } from "@/utils/getOptionTier";
@@ -20,7 +18,6 @@ export function parseBraceletTooltip(item: any): Bracelet {
     };
   }
 
-  // 핵심 수정: Element_004 고정 대신, 전체 탐색
   const partBox =
     Object.values(tooltip).find(
       (el: any) =>
@@ -39,32 +36,38 @@ export function parseBraceletTooltip(item: any): Bracelet {
     };
   }
 
-  // 이하 기존 로직 거의 그대로 유지
+  const colorMap: Record<string, string> = {
+    "#FE9600": "text-orange-500",
+    "#00B5FF": "text-blue-400",
+    "#CE43FC": "text-purple-400",
+    "#91FE02": "text-lime-400",
+    "#99FF99": "text-green-300",
+    "#999999": "text-gray-400", // fallback
+  };
+
   const rawLines: string[] = partBox.split("<BR>");
-
-  const lines: string[] = rawLines
-    .map((line: string) =>
-      line
-        .replace(/<img[^>]*>/g, "")
-        .replace(/<[^>]*>/g, "")
-        .replace(/^\s+|\s+$/g, "")
-    )
-    .filter((line: string) => line.length > 0);
-
   const MainOptions: { name: string; value: number | string }[] = [];
   const SubOptions: {
     name: string;
     value: number | string;
     tier: "상" | "중" | "하";
+    color: string;
+    colorClass: string;
   }[] = [];
 
   let currentSubOption: (typeof SubOptions)[0] | null = null;
 
   rawLines.forEach((rawLine) => {
+    const colorMatch = rawLine.match(
+      /<FONT[^>]*COLOR=['"]?(#?[A-Fa-f0-9]{6})['"]?>/i
+    );
+    const color = colorMatch ? colorMatch[1].toUpperCase() : "#999999";
+    const colorClass = colorMap[color] || "text-gray-400";
+
     const cleanLine = rawLine
       .replace(/<img[^>]*>/g, "")
       .replace(/<[^>]*>/g, "")
-      .replace(/^\s+|\s+$/g, "");
+      .trim();
 
     if (cleanLine.length === 0) return;
 
@@ -74,7 +77,7 @@ export function parseBraceletTooltip(item: any): Bracelet {
       );
       if (match) {
         MainOptions.push({
-          name: match[1],
+          name: `${match[1]}`,
           value: match[2],
         });
       }
@@ -83,15 +86,17 @@ export function parseBraceletTooltip(item: any): Bracelet {
     }
 
     const isNewSubOption = rawLine.includes("emoticon_tooltip_bracelet");
-
     const valueMatch = cleanLine.match(/([+-]?[0-9]+(?:\.[0-9]+)?)\s*%?/);
     const value = valueMatch ? valueMatch[1] : "0";
 
     if (isNewSubOption) {
+      const tier = getOptionTier(cleanLine, value, item.Grade);
       currentSubOption = {
         name: cleanLine,
         value,
-        tier: getOptionTier(cleanLine, value, item.Grade),
+        tier,
+        color,
+        colorClass,
       };
       SubOptions.push(currentSubOption);
     } else if (currentSubOption) {

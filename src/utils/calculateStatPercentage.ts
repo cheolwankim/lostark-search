@@ -1,4 +1,5 @@
 // src/utils/calculateStatPercentage.ts
+// 스탯 퍼센트 계산기
 
 export const calculateStatPercentage = (
   value: number,

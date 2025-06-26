@@ -68,6 +68,8 @@ export interface Bracelet {
     name: string;
     value: number | string;
     tier: "상" | "중" | "하";
+    color: string; 
+    colorClass: string; 
   }[];
 }
 

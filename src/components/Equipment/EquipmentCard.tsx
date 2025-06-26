@@ -107,7 +107,7 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
         )
       : [];
 
-  const parsedStats = 
+  const parsedStats =
     category === "weapon-armor" || category === "accessory"
       ? parseStatEffect(tooltip, category)
       : {};
@@ -145,6 +145,7 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
         alignItems: "center",
         height: "40px",
         whiteSpace: "nowrap",
+        
       }}
     >
       {/* 이미지 wrapper */}
@@ -262,9 +263,9 @@ const EquipmentCard: React.FC<Props> = ({ item, small = false, category }) => {
         >
           {polishEffects.slice(0, 3).map((effect, idx) => {
             let gradeColor = "#999999";
-            if (effect.grade === "상") gradeColor = "#FFD700";
-            else if (effect.grade === "중") gradeColor = "#A770FF";
-            else if (effect.grade === "하") gradeColor = "#4FC3F7";
+            if (effect.grade === "상") gradeColor = "#FE9600";
+            else if (effect.grade === "중") gradeColor = "#CE43FC";
+            else if (effect.grade === "하") gradeColor = "#00B5FF";
 
             return (
               <div

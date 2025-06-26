@@ -1,3 +1,5 @@
+// 악세서리 연마효과 관련 Tooltip 항목을 파싱. 
+
 import { TooltipData, stripHtml } from "@/utils/tooltipParser";
 import { getGradeFromText } from "@/utils/getGradeFromText";
 import { AccessoryCategory } from "@/utils/validOptions";

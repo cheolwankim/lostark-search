@@ -1,3 +1,5 @@
+// 각인 관련 Tooltip에서 각인 정보를 추출하는 유틸. 
+
 export interface ParsedEngraving {
   name: string;
   level: string;

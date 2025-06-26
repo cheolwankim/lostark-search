@@ -45,7 +45,9 @@ export default function BraceletCard({ item, tier }: Props) {
         <div className="flex flex-col mt-2 space-y-0.5">
           {item.SubOptions.map((opt, idx) => (
             <div key={idx} className="flex items-center">
-              <span className="font-bold min-w-[1.5em]">[{opt.tier}]</span>
+              <span className={`font-bold min-w-[1.5em] ${opt.colorClass}`}>
+                [{opt.tier}]
+              </span>
               <span className="ml-1">{opt.name}</span>
             </div>
           ))}

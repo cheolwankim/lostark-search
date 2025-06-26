@@ -1,4 +1,5 @@
 // src/utils/getOptionTier.ts
+// 팔찌 옵션 상중하 , 없는건 다 '하' 처리
 
 export const optionThresholds: Record<
   string,
