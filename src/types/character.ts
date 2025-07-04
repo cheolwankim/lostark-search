@@ -4,6 +4,7 @@ export interface ArmoryProfile {
   CharacterClassName: string;
   ServerName: string;
   ItemAvgLevel: string;
+  CombatPower: string;
   Stats: {
     Type: string;
     Value: string;
@@ -34,8 +35,14 @@ export interface EngravingEffect {
   Description: string; // 예: "Lv.3"
 }
 
+export interface ArkPassiveEffects {
+  Grade: string;
+  Level: string;
+  Name: string;
+}
+
 export interface ArmoryEngraving {
-  Effects: EngravingEffect[];
+  ArkPassiveEffects: ArkPassiveEffects;
 }
 
 // 보석
@@ -68,8 +75,8 @@ export interface Bracelet {
     name: string;
     value: number | string;
     tier: "상" | "중" | "하";
-    color: string; 
-    colorClass: string; 
+    color: string;
+    colorClass: string;
   }[];
 }
 
@@ -77,7 +84,15 @@ export interface Bracelet {
 export interface CharacterDetail {
   ArmoryProfile: ArmoryProfile;
   ArmoryEquipment?: Equipment[];
-  ArmoryEngraving?: ArmoryEngraving;
+  ArmoryEngraving?: {
+    ArkPassiveEffects: {
+      Grade: string;
+      Level: number; 
+      Name: string;
+      Description?: string;
+      AbilityStoneLevel?: number | null;
+    }[];
+  };
   ArmoryGem?: {
     Gems: Gem[];
   };

@@ -5,10 +5,7 @@ import {
   getCharacterProfile,
   getCharacterProfileImage,
 } from "@/api/lostarkApi";
-import {
-  CharacterDetail,
-  CharacterSummary,
-} from "@/types/character";
+import { CharacterDetail, CharacterSummary } from "@/types/character";
 import CharacterInfo from "@/components/Character/CharacterInfo";
 import { RightPanel } from "@/components/Sidebar";
 

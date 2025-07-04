@@ -12,6 +12,7 @@ import {
 } from "@/utils/tooltipParser";
 import { parseBraceletTooltip } from "@/utils/parseBraceletTooltip";
 import { parseEngravingsFromTooltip } from "@/utils/parseEngravingsFromTooltip";
+import { gradeColorMap } from "@/utils/getGradeColor";
 
 interface Props {
   detail: CharacterDetail;
@@ -20,7 +21,7 @@ interface Props {
 export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
 
-  console.log(ArmoryEquipment);
+  console.log(ArmoryEngraving);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({
@@ -122,21 +123,36 @@ export default function EquipmentSection({ detail }: Props) {
       )}
 
       {/* 각인 섹션 */}
-      {ArmoryEngraving?.Effects && ArmoryEngraving.Effects.length > 0 && (
-        <div>
-          <h3 className="text-lg font-semibold mb-2">각인</h3>
-          <div className="space-y-1">
-            {ArmoryEngraving.Effects.map((engrave, idx) => (
-              <EngravingCard
-                key={idx}
-                name={engrave.Name}
-                level={engrave.Description}
-              />
-            ))}
+      {ArmoryEngraving?.ArkPassiveEffects &&
+        ArmoryEngraving?.ArkPassiveEffects?.length > 0 && (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">각인</h3>
+            <div className="space-y-1">
+              {ArmoryEngraving.ArkPassiveEffects.map((engrave, idx) => {
+                console.log(engrave);
+                return (
+                  <div key={idx}>
+                    <span
+                      className={`${
+                        gradeColorMap[engrave.Grade] || "text-gray-500"
+                      } mr-1`}
+                    >
+                      {engrave.Grade}
+                    </span>
+                    {engrave.Name}
+                    <span className="text-orange-500 mx-1">◆</span>
+                    {engrave.Level} 
+                    {(engrave.AbilityStoneLevel ?? 0) > 0 && (
+                      <span className="text-blue-600 ml-1">
+                        +{engrave.AbilityStoneLevel}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
-
+        )}
       {/* 보석 섹션 */}
       {ArmoryGem?.Gems && ArmoryGem.Gems.length > 0 && (
         <div>

@@ -24,13 +24,12 @@ export default function CharacterInfo({
       <h2 className="text-xl font-bold text-gray-800 mb-1">
         {profile.CharacterName}
       </h2>
+      <p className="text-sm  font-bold text-gray-800">{profile.CombatPower}</p>
       <p className="text-sm text-gray-500 mb-1">서버: {profile.ServerName}</p>
       <p className="text-sm text-gray-500 mb-1">
         직업: {profile.CharacterClassName}
       </p>
-      <p className="text-sm text-gray-500">
-        아이템 레벨: {profile.ItemAvgLevel}
-      </p>
+      <p className="text-sm text-gray-500">레벨: {profile.ItemAvgLevel}</p>
 
       <div className="mt-6 space-y-2 text-left">
         <button

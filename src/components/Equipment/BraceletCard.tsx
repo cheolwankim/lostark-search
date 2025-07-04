@@ -30,7 +30,7 @@ export default function BraceletCard({ item, tier }: Props) {
         <div className="flex flex-col mt-2 space-y-0.5">
           {item.MainOptions.map((opt, idx) => (
             <div key={idx} className="flex items-center">
-              <span className="font-bold min-w-[1.5em]">주</span>
+              <span className="font-bold min-w-[1.5em]">[주]</span>
               <span className="ml-1">
                 {opt.name}
                 {opt.value ? ` +${opt.value}` : ""}
