@@ -70,3 +70,17 @@ git clone https://github.com/cheolwankim/loasearch.git
 cd loasearch
 npm install
 npm start
+```
+---
+## 트러블 슈팅 경험
+✅ Netlify SPA 라우팅 문제 → _redirects 파일 추가로 해결
+✅ 툴팁 JSON 데이터 구조 변경 → 유틸 파서 함수 모듈화 및 알맞은 정규화식으로 유지보수성 향상
+✅ Tailwind 스타일 반영 안됨 → tailwind.config.js content 경로 수정 및 CSS 지시자 재확인
+
+
+---
+## 개발자 한마디
+이 프로젝트는 단순한 데이터 표시를 넘어, 복잡한 API 데이터를 구조화하고 시각적으로 표현하는 방법을 학습한 좋은 경험이었습니다.
+특히 Netlify SPA 라우팅, Webpack alias 설정, 툴팁 파서 유틸 구조화 및 적절한 정규화식의 사용으로 문제들을 직접 해결하며 프론트엔드 역량을 강화했습니다.
+
+
