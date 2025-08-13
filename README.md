@@ -5,7 +5,7 @@ Lost Ark 공식 API를 활용하여 캐릭터 검색, 장비·보석·각인·�
 ---
 
 ##  배포 링크
-- **사이트 (Netlify)** 👉 https://loasearch.netlify.app
+- **사이트 (Netlify)** 👉 https://lostark-search.netlify.app/
 - **GitHub Repository** 👉 [cheolwankim/loasearch](https://github.com/cheolwankim/loasearch)
 
 ---
