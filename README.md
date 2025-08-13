@@ -28,21 +28,16 @@ Lost Ark 공식 API를 활용하여 캐릭터 검색, 장비·보석·각인·�
 - **캐릭터 검색**
   - 닉네임 입력 시 Lost Ark API 호출 → 캐릭터 프로필 및 장비 정보 표시
 - **장비 / 보석 / 각인 / 팔찌 상세 정보 표시**
-  - Lost Ark API의 JSON 툴팁 데이터 파싱 및 UI 변환
-- **UI 시각화**
-  - 등급·품질·옵션 티어에 따른 색상 매핑
-- **SPA 라우팅 안정화**
-  - `_redirects` 파일을 통한 Netlify 새로고침 404 방지
-- **컴포넌트 모듈화**
-  - Character, Equipment, Sidebar 등 UI 단위로 폴더 구조화
-
+  - 인게임과 동일하게 표시
 ---
 
 ## 📸 주요 화면
-(이미지 예시 — 실제 스크린샷 추가 권장)
 
-![홈페이지 검색 화면](docs/home_search.png)
-![캐릭터 상세 정보](docs/character_detail.png)
+
+
+![홈페이지 검색 화면](<img width="1027" height="548" alt="Image" src="https://github.com/user-attachments/assets/e7e8ae4d-06b4-4866-ba3d-1892b576c956" />)
+
+![캐릭터 상세 정보](<img width="1027" height="548" alt="Image" src="https://github.com/user-attachments/assets/1bd9335f-40d5-4f4b-9110-70064bbe4bb2" />)
 ![장비 상세 툴팁](docs/equipment_tooltip.png)
 
 ---
