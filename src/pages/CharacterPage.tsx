@@ -33,7 +33,7 @@ export default function CharacterPage() {
 
         setDetail(detailData);
         setSiblings(siblingData);
-        setProfileImageUrl(profileImageData.CharacterImage);
+        setProfileImageUrl(profileImageData?.CharacterImage ?? "");
       } catch (err) {
         console.error(err);
         setError("캐릭터 정보를 불러올 수 없습니다.");
@@ -44,7 +44,7 @@ export default function CharacterPage() {
   }, [name]);
 
   if (error) return <p>{error}</p>;
-  if (!detail) return <p>로딩 중...</p>;
+  if (!detail) return <p>캐릭터 정보를 가져올 수 없습니다</p>;
 
   return (
     <div className="flex min-h-screen max-w-5xl mx-auto px-4 py-6">

@@ -13,7 +13,7 @@ export default function BraceletCard({ item, tier }: Props) {
     <div className="flex flex-col space-y-1 text-xs">
       {/* 카드 헤더 */}
       <div className="flex items-center space-x-2 relative">
-        <div className="relative w-8 h-8">
+        <div className="relative w-8 h-8"> 
           <img src={item.Icon} alt={item.Name} className="w-8 h-8" />
           {tier && (tier === "3" || tier === "4") && (
             <span className="absolute bottom-0 right-0 bg-black bg-opacity-50 text-white text-[9px] px-[2px] rounded">

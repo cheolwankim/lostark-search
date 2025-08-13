@@ -20,8 +20,6 @@ interface Props {
 
 export default function EquipmentSection({ detail }: Props) {
   const { ArmoryEquipment, ArmoryGem, ArmoryEngraving, ArmoryCard } = detail;
-
-  console.log(ArmoryEngraving);
   const filteredEquipment = ArmoryEquipment?.filter(
     (item) => !item.Name.includes("나침반") && !item.Name.includes("부적")
   )?.map((item) => ({
@@ -60,6 +58,28 @@ export default function EquipmentSection({ detail }: Props) {
                   category="weapon-armor"
                 />
               ))}
+              {/* 어빌리티 스톤 섹션 */}
+              {stoneItems && stoneItems.length > 0 && (
+                <div className="flex flex-col items-start mt-4 text-xs">
+                  {stoneItems.map((item, idx) => {
+                    const engravings = parseEngravingsFromTooltip(item.Tooltip);
+                    return (
+                      <div key={idx} className="flex gap-1 rounded p-2  w-full">
+                        <EquipmentCard item={item} small category="stone" />
+                        <div className="flex gap-2 mt-1">
+                          {engravings.map((engrave, i) => (
+                            <EngravingCard
+                              key={i}
+                              name={engrave.name}
+                              level={engrave.level}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* 장신구 + 팔찌 */}
@@ -92,33 +112,6 @@ export default function EquipmentSection({ detail }: Props) {
               })}
             </div>
           </div>
-
-          {/* 어빌리티 스톤 섹션 */}
-          {stoneItems && stoneItems.length > 0 && (
-            <div className="flex flex-col items-start mt-4 text-xs">
-              <div className="font-bold mb-1">어빌리티 스톤</div>
-              {stoneItems.map((item, idx) => {
-                const engravings = parseEngravingsFromTooltip(item.Tooltip);
-                return (
-                  <div
-                    key={idx}
-                    className="flex flex-col gap-1 border rounded p-2 bg-gray-50 w-full"
-                  >
-                    <EquipmentCard item={item} small category="stone" />
-                    <div className="flex gap-2 mt-1">
-                      {engravings.map((engrave, i) => (
-                        <EngravingCard
-                          key={i}
-                          name={engrave.name}
-                          level={engrave.level}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </div>
       )}
 
@@ -129,7 +122,6 @@ export default function EquipmentSection({ detail }: Props) {
             <h3 className="text-lg font-semibold mb-2">각인</h3>
             <div className="space-y-1">
               {ArmoryEngraving.ArkPassiveEffects.map((engrave, idx) => {
-                console.log(engrave);
                 return (
                   <div key={idx}>
                     <span
@@ -141,7 +133,7 @@ export default function EquipmentSection({ detail }: Props) {
                     </span>
                     {engrave.Name}
                     <span className="text-orange-500 mx-1">◆</span>
-                    {engrave.Level} 
+                    {engrave.Level}
                     {(engrave.AbilityStoneLevel ?? 0) > 0 && (
                       <span className="text-blue-600 ml-1">
                         +{engrave.AbilityStoneLevel}
