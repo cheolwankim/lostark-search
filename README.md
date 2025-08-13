@@ -73,9 +73,9 @@ npm start
 ```
 ---
 ## 트러블 슈팅 경험
-✅ Netlify SPA 라우팅 문제 → _redirects 파일 추가로 해결
-✅ 툴팁 JSON 데이터 구조 변경 → 유틸 파서 함수 모듈화 및 알맞은 정규화식으로 유지보수성 향상
-✅ Tailwind 스타일 반영 안됨 → tailwind.config.js content 경로 수정 및 CSS 지시자 재확인
+✅ Netlify SPA 라우팅 문제 → _redirects 파일 추가로 해결  
+✅ 툴팁 JSON 데이터 구조 변경 → 유틸 파서 함수 모듈화 및 알맞은 정규화식으로 유지보수성 향상  
+✅ Tailwind 스타일 반영 안됨 → tailwind.config.js content 경로 수정 및 CSS 지시자 재확인  
 
 
 ---
