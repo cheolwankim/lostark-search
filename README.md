@@ -4,7 +4,7 @@ Lost Ark 공식 API를 활용하여 캐릭터 검색, 장비·보석·각인·�
 
 ---
 
-## 📌 배포 링크
+##  배포 링크
 - **사이트 (Netlify)** 👉 https://loasearch.netlify.app
 - **GitHub Repository** 👉 [cheolwankim/loasearch](https://github.com/cheolwankim/loasearch)
 
@@ -24,25 +24,28 @@ Lost Ark 공식 API를 활용하여 캐릭터 검색, 장비·보석·각인·�
 
 ---
 
-## ✨ 핵심 기능 요약
+## 핵심 기능 요약
 - **캐릭터 검색**
   - 닉네임 입력 시 Lost Ark API 호출 → 캐릭터 프로필 및 장비 정보 표시
 - **장비 / 보석 / 각인 / 팔찌 상세 정보 표시**
   - 인게임과 동일하게 표시
 ---
 
-## 📸 주요 화면
+## 주요 화면
+<img width="1029" height="284" alt="Image" src="https://github.com/user-attachments/assets/b22a0bdb-6754-4114-8039-594931a3fa60" />
+
+<br><br><br>
 
 
 
-![홈페이지 검색 화면](<img width="1027" height="548" alt="Image" src="https://github.com/user-attachments/assets/e7e8ae4d-06b4-4866-ba3d-1892b576c956" />)
 
-![캐릭터 상세 정보](<img width="1027" height="548" alt="Image" src="https://github.com/user-attachments/assets/1bd9335f-40d5-4f4b-9110-70064bbe4bb2" />)
-![장비 상세 툴팁](docs/equipment_tooltip.png)
+
+<img width="1027" height="548" alt="Image" src="https://github.com/user-attachments/assets/3ffabdae-081c-4090-9a95-d269da4b800a" />
+
 
 ---
 
-## 💡 핵심 구현 경험
+## 핵심 구현 경험
 
 1. **Lost Ark API 연동**
    - 인증키를 사용해 Axios로 API 요청
@@ -59,7 +62,7 @@ Lost Ark 공식 API를 활용하여 캐릭터 검색, 장비·보석·각인·�
 
 ---
 
-## ⚙ 실행 방법
+## 실행 방법
 
 ### 프론트엔드 실행
 ```bash
